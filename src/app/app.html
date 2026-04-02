@@ -1,0 +1,189 @@
+<div class="container">
+  <div class="card destaque" *ngIf="proximoAgendamento() as proximo">
+    <div class="badge-topo">Próximo atendimento</div>
+    <h2>{{ proximo.nome }}</h2>
+    <p>{{ formatarDataHoraBR(proximo.data, proximo.horario) }}</p>
+    <span
+      class="status"
+      [ngClass]="{
+        'agendado': proximo.status === 'AGENDADO',
+        'concluido': proximo.status === 'CONCLUIDO',
+        'cancelado': proximo.status === 'CANCELADO'
+      }"
+    >
+      {{ proximo.status }}
+    </span>
+  </div>
+
+  <div class="card form-card">
+    <div class="title-area">
+      <h1>Agendamentos</h1>
+      <p>{{ editandoId() !== null ? 'Editando agendamento' : 'Cadastre um novo agendamento' }}</p>
+    </div>
+
+    <div class="field-group">
+      <label for="nome">Nome do cliente</label>
+      <input id="nome" #nomeInput type="text" placeholder="Digite o nome do cliente" />
+    </div>
+
+    <div class="form-row">
+      <div class="field-group">
+        <label for="data">Data</label>
+        <input id="data" #dataInput type="date" />
+      </div>
+
+      <div class="field-group">
+        <label for="hora">Hora</label>
+        <input id="hora" #horaInput type="time" />
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label for="descricao">Descrição</label>
+      <textarea
+        id="descricao"
+        #descricaoInput
+        rows="3"
+        placeholder="Digite uma descrição"
+      ></textarea>
+    </div>
+
+    <p class="erro" *ngIf="mensagemErro()">{{ mensagemErro() }}</p>
+
+    <div class="actions">
+      <button
+        class="btn btn-primary"
+        type="button"
+        (click)="salvar(nomeInput, dataInput, horaInput, descricaoInput)"
+        [disabled]="salvando()"
+      >
+        {{ salvando() ? 'Salvando...' : (editandoId() !== null ? 'Atualizar' : 'Salvar') }}
+      </button>
+
+      <button
+        *ngIf="editandoId() !== null"
+        class="btn btn-secondary"
+        type="button"
+        (click)="cancelarEdicao(nomeInput, dataInput, horaInput, descricaoInput)"
+      >
+        Cancelar edição
+      </button>
+    </div>
+  </div>
+
+  <div class="card list-card">
+    <div class="title-area">
+      <h2>Agenda organizada por data e horário</h2>
+      <p>{{ listaFiltrada().length }} agendamento(s)</p>
+    </div>
+
+    <div class="filtros">
+      <button
+        type="button"
+        class="btn-filtro"
+        [class.ativo]="filtroStatus() === 'TODOS'"
+        (click)="definirFiltro('TODOS')"
+      >
+        Todos
+      </button>
+
+      <button
+        type="button"
+        class="btn-filtro"
+        [class.ativo]="filtroStatus() === 'AGENDADO'"
+        (click)="definirFiltro('AGENDADO')"
+      >
+        Agendado
+      </button>
+
+      <button
+        type="button"
+        class="btn-filtro"
+        [class.ativo]="filtroStatus() === 'CONCLUIDO'"
+        (click)="definirFiltro('CONCLUIDO')"
+      >
+        Concluído
+      </button>
+
+      <button
+        type="button"
+        class="btn-filtro"
+        [class.ativo]="filtroStatus() === 'CANCELADO'"
+        (click)="definirFiltro('CANCELADO')"
+      >
+        Cancelado
+      </button>
+    </div>
+
+    <p class="empty" *ngIf="listaFiltrada().length === 0">
+      📅 Nenhum agendamento encontrado nesse filtro.
+    </p>
+
+    <div class="item" *ngFor="let item of listaFiltrada()">
+      <div class="item-info">
+        <strong>{{ item.nome }}</strong>
+        <p>{{ formatarDataHoraBR(item.data, item.horario) }}</p>
+        <span class="descricao" *ngIf="item.descricao">{{ item.descricao }}</span>
+
+        <div class="status-wrap">
+          <span
+            class="status"
+            [ngClass]="{
+              'agendado': item.status === 'AGENDADO',
+              'concluido': item.status === 'CONCLUIDO',
+              'cancelado': item.status === 'CANCELADO'
+            }"
+          >
+            {{ item.status }}
+          </span>
+        </div>
+      </div>
+
+      <div class="item-actions">
+        <button
+          class="btn btn-edit"
+          type="button"
+          (click)="iniciarEdicao(item, nomeInput, dataInput, horaInput, descricaoInput)"
+        >
+          Editar
+        </button>
+
+        <button
+          class="btn btn-neutral"
+          type="button"
+          (click)="alterarStatus(item, 'AGENDADO')"
+          *ngIf="item.status !== 'AGENDADO'"
+        >
+          Reagendar
+        </button>
+
+        <button
+          class="btn btn-success"
+          type="button"
+          (click)="alterarStatus(item, 'CONCLUIDO')"
+          *ngIf="item.status !== 'CONCLUIDO'"
+        >
+          Concluir
+        </button>
+
+        <button
+          class="btn btn-warning"
+          type="button"
+          (click)="alterarStatus(item, 'CANCELADO')"
+          *ngIf="item.status !== 'CANCELADO'"
+        >
+          Cancelar
+        </button>
+
+        <button
+          class="btn btn-delete"
+          type="button"
+          (click)="excluir(item.id)"
+          [disabled]="excluindo()"
+        >
+          {{ excluindo() ? 'Excluindo...' : 'Excluir' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
