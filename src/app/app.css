@@ -5,7 +5,7 @@
 :host {
   display: block;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+  background: #020617; /* fundo sólido (remove borda branca estranha) */
   padding: 32px 16px;
 }
 
@@ -15,42 +15,34 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* CARDS */
+/* CARD NORMAL */
 .card {
-  background: rgba(15, 23, 42, 0.7);
+  background: #0f172a; /* azul escuro sólido */
   border: 1px solid #1e293b;
   border-radius: 20px;
   padding: 24px;
   margin-bottom: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(10px);
 }
 
-/* DESTAQUE */
+/* CARD DESTAQUE */
 .destaque {
   background: linear-gradient(135deg, #6366f1 0%, #9333ea 100%);
   color: white;
 }
 
-.destaque h2 {
-  margin: 8px 0;
-  font-size: 28px;
-}
-
-.destaque p {
-  margin: 0 0 12px;
-  font-size: 16px;
-  opacity: 0.9;
-}
-
 /* TITULOS */
 .title-area h1,
 .title-area h2 {
-  color: #e2e8f0;
+  color: #f1f5f9;
 }
 
 .title-area p {
   color: #94a3b8;
+}
+
+/* LABEL */
+label {
+  color: #cbd5f5;
 }
 
 /* INPUTS */
@@ -61,15 +53,19 @@ textarea {
   border: 1px solid #334155;
   border-radius: 12px;
   background: #020617;
-  color: #e2e8f0;
+  color: #f1f5f9;
   font-size: 15px;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #64748b;
 }
 
 input:focus,
 textarea:focus {
   outline: none;
   border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
 }
 
 /* BOTÕES */
@@ -80,11 +76,6 @@ textarea:focus {
   cursor: pointer;
   font-size: 14px;
   font-weight: 700;
-  transition: 0.2s;
-}
-
-.btn:hover {
-  transform: translateY(-1px);
 }
 
 .btn-primary {
@@ -94,7 +85,7 @@ textarea:focus {
 
 .btn-secondary {
   background: #1e293b;
-  color: #e2e8f0;
+  color: #f1f5f9;
 }
 
 .btn-success {
@@ -120,8 +111,8 @@ textarea:focus {
 /* FILTROS */
 .btn-filtro {
   border: 1px solid #334155;
-  background: transparent;
-  color: #94a3b8;
+  background: #020617;
+  color: #cbd5f5;
   border-radius: 999px;
   padding: 10px 14px;
   font-size: 13px;
@@ -130,6 +121,7 @@ textarea:focus {
 .btn-filtro.ativo {
   background: #6366f1;
   color: white;
+  border-color: #6366f1;
 }
 
 /* LISTA */
@@ -139,28 +131,21 @@ textarea:focus {
 }
 
 .item-info strong {
-  color: #f1f5f9;
+  color: #f8fafc;
 }
 
 .item-info p {
-  color: #94a3b8;
+  color: #cbd5f5;
 }
 
 .descricao {
-  color: #64748b;
+  color: #94a3b8;
 }
 
 /* STATUS */
-.status {
-  padding: 6px 10px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-}
-
 .status.agendado {
-  background: #1e3a8a;
-  color: #93c5fd;
+  background: #1e40af;
+  color: #bfdbfe;
 }
 
 .status.concluido {
@@ -170,7 +155,7 @@ textarea:focus {
 
 .status.cancelado {
   background: #7f1d1d;
-  color: #fca5a5;
+  color: #fecaca;
 }
 
 /* ERRO */
@@ -178,15 +163,4 @@ textarea:focus {
   background: #7f1d1d;
   color: #fecaca;
   border: 1px solid #b91c1c;
-}
-
-/* RESPONSIVO */
-@media (max-width: 640px) {
-  .item {
-    flex-direction: column;
-  }
-
-  .btn {
-    width: 100%;
-  }
 }
